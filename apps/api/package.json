@@ -2,15 +2,17 @@
     "name": "@saas/api",
     "version": "1.0.0",
     "scripts": {
-        "dev": "tsx watch src/index.ts"
+        "dev": "tsx watch src/http/server.ts"
     },
     "devDependencies": {
         "@types/node": "^24.6.1",
         "eslint": "^9.34.0",
+        "prisma": "^6.16.3",
         "tsx": "^4.20.6"
     },
     "dependencies": {
         "@fastify/cors": "^11.1.0",
+        "@prisma/client": "^6.16.3",
         "@saas/auth": "^0.0.0",
         "fastify": "^5.6.1",
         "fastify-type-provider-zod": "^6.0.0",
