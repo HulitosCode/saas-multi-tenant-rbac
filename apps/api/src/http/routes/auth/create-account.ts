@@ -12,7 +12,7 @@ export async function createAccount(app: FastifyInstance) {
         body: z.object({
           name: z.string(),
           email: z.string().email(),
-          password: z.string().min(6, "Password must be at least 6 characters")
+          password: z.string().min(6, "Password must be at least 6 characters"),
         }),
         response: {
           201: z.object({
@@ -58,6 +58,6 @@ export async function createAccount(app: FastifyInstance) {
       });
 
       return reply.status(201).send(user);
-    }
+    },
   );
 }

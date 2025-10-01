@@ -1,11 +1,7 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const roleSchema = z.union([
-    z.union([
-        z.literal('ADMIN'),
-        z.literal('MEMBER'),
-        z.literal('BILLING'),
-    ]),
-])
+  z.union([z.literal("ADMIN"), z.literal("MEMBER"), z.literal("BILLING")]),
+]);
 
-export type Role = z.infer<typeof roleSchema>
+export type Role = z.infer<typeof roleSchema>;
