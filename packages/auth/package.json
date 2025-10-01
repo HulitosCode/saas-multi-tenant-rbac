@@ -4,8 +4,11 @@
     "private": true,
     "main": "index.ts",
     "types": "index.ts",
-
-"devDependencies": {
-    "eslint": "^9.34.0"
-  }
+    "devDependencies": {
+        "@tsconfig/node-lts": "^22.0.2",
+        "eslint": "^9.34.0"
+    },
+    "dependencies": {
+        "@casl/ability": "^6.7.3"
+    }
 }
