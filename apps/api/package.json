@@ -12,15 +12,18 @@
         "prisma": "^6.16.3",
         "tsx": "^4.20.6"
     },
-
     "dependencies": {
         "@faker-js/faker": "^10.0.0",
         "@fastify/cors": "^11.1.0",
+        "@fastify/jwt": "^10.0.0",
+        "@fastify/swagger": "^9.5.2",
+        "@fastify/swagger-ui": "^5.2.3",
         "@prisma/client": "^6.16.3",
         "@saas/auth": "^0.0.0",
         "bcrypt": "^6.0.0",
         "fastify": "^5.6.1",
         "fastify-type-provider-zod": "^6.0.0",
+        "ui": "^0.2.4",
         "zod": "^4.1.11"
     }
 }
