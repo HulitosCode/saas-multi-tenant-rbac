@@ -15,39 +15,38 @@ export async function resetPassword(app: FastifyInstance) {
       {
         schema: {
           tags: ["auth"],
-              summary: "Get authenticated user profile",
-              body: z.object({
-                  code: z.string(),
-                  password: z.string().min(6)
-              
+          summary: "Get authenticated user profile",
+          body: z.object({
+            code: z.string(),
+            password: z.string().min(6),
           }),
           response: {
-            204: z.null()
+            204: z.null(),
           },
         },
       },
       async (request, reply) => {
-        const { code, password } = request.body
+        const { code, password } = request.body;
         const tokenFromCode = await prisma.token.findUnique({
-            where: { id: code }
-        })
+          where: { id: code },
+        });
 
-          if (!tokenFromCode) {
-            throw new UnauthorizedError() 
+        if (!tokenFromCode) {
+          throw new UnauthorizedError();
         }
 
-        const passwordHash = await hash(password, 10)
+        const passwordHash = await hash(password, 10);
 
-          await prisma.user.update({
-              where: {
-                  id: tokenFromCode.userId
-              },
-              data: {
-                  passwordHash
-              }
-          })
+        await prisma.user.update({
+          where: {
+            id: tokenFromCode.userId,
+          },
+          data: {
+            passwordHash,
+          },
+        });
 
-          return reply.status(204).send()
+        return reply.status(204).send();
       },
     );
 }
