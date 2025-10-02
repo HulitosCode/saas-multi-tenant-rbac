@@ -6,49 +6,60 @@ import z, { email } from "zod";
 import { BadRequestError } from "../_errors/bad-request-error";
 
 export async function authenticateWithPassword(app: FastifyInstance) {
-    app.withTypeProvider<ZodTypeProvider>().post('/sessions/password', {
-        schema: {
-            tags: ['auth'],
-            summary: 'Authenticate with e-mail & password',
-            body: z.object({
-                email: z.string().email(),
-                password: z.string()
-            }),
-            response: {
-                201: z.object({
-                    token: z.string()
-                })
-            }
-        }
+  app.withTypeProvider<ZodTypeProvider>().post(
+    "/sessions/password",
+    {
+      schema: {
+        tags: ["auth"],
+        summary: "Authenticate with e-mail & password",
+        body: z.object({
+          email: z.string().email(),
+          password: z.string(),
+        }),
+        response: {
+          201: z.object({
+            token: z.string(),
+          }),
+        },
+      },
     },
-        async (request, reply) => {
-            const { email, password } = request.body
+    async (request, reply) => {
+      const { email, password } = request.body;
 
-            const userFromEmail = await prisma.user.findUnique({
-                where: { email }
-            })
+      const userFromEmail = await prisma.user.findUnique({
+        where: { email },
+      });
 
-            if (!userFromEmail) {
-                throw new BadRequestError('Invalid credentials.')
-            }
+      if (!userFromEmail) {
+        throw new BadRequestError("Invalid credentials.");
+      }
 
-            if (userFromEmail.passwordHash === null) {
-                throw new BadRequestError(' User does not have a password, use social login.')
-            }
+      if (userFromEmail.passwordHash === null) {
+        throw new BadRequestError(
+          " User does not have a password, use social login.",
+        );
+      }
 
-            const isPasswordValid = await compare(password, userFromEmail.passwordHash)
+      const isPasswordValid = await compare(
+        password,
+        userFromEmail.passwordHash,
+      );
 
-            if (!isPasswordValid) {
-                throw new BadRequestError('Invalid credentials.')
-            }
+      if (!isPasswordValid) {
+        throw new BadRequestError("Invalid credentials.");
+      }
 
-            const token = await reply.jwtSign({
-                sub: userFromEmail.id
-            }, {
-                sign: {
-                    expiresIn: '7d'
-                }
-            })
-            return reply.status(201).send({ token })
-         })
+      const token = await reply.jwtSign(
+        {
+          sub: userFromEmail.id,
+        },
+        {
+          sign: {
+            expiresIn: "7d",
+          },
+        },
+      );
+      return reply.status(201).send({ token });
+    },
+  );
 }

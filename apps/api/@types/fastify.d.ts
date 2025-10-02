@@ -1,8 +1,7 @@
-import 'fastify'
+import "fastify";
 
-
-declare module 'fastify' {
-    export interface FastifyRequest {
-        getCurrentUserId(): Promise<string>
-    }
+declare module "fastify" {
+  export interface FastifyRequest {
+    getCurrentUserId(): Promise<string>;
+  }
 }
