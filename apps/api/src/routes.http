@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-### Criar usuário
+### Login do usuário
 POST http://localhost:3333/sessions/password
 Content-Type: application/json
 
@@ -19,3 +19,9 @@ Content-Type: application/json
   "email": "helton@acme.com",
   "password": "123456"
 }
+
+
+### Pegando dados de perfil do usuario
+GET http://localhost:3333/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmZTRjYjRhYy1mNjAyLTQyMWUtODY4NS00MGNlZjQ4ODJhNjEiLCJpYXQiOjE3NTkzOTAxNDcsImV4cCI6MTc1OTk5NDk0N30.Z-2JgTY7u9d-LFDS8pwUI1a6awOxDxDFEjxhb0BSB5U
