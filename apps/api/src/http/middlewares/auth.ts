@@ -16,7 +16,7 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
     };
 
     request.getUserMembership = async (slug: string) => {
-      const userId = await request.getCurrentUserId()
+      const userId = await request.getCurrentUserId();
 
       const member = await prisma.member.findFirst({
         where: {
@@ -26,21 +26,22 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
           },
         },
         include: {
-          organization: true
-        }
-      })
+          organization: true,
+        },
+      });
 
       if (!member) {
-        throw new UnauthorizedError('You are not a member of this organization')
+        throw new UnauthorizedError(
+          "You are not a member of this organization",
+        );
       }
 
-      const { organization, ...membership } = member
+      const { organization, ...membership } = member;
 
       return {
         organization,
-        membership
-      }
-    }
-
+        membership,
+      };
+    };
   });
 });

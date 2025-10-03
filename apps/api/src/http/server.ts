@@ -48,16 +48,16 @@ app.register(fastifySwagger, {
       description: "Full-stack saas app with multi-tenant & RBAC",
       version: "1.0.0",
     },
-    
+
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT'
-        }
-      }
-    }
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 });
@@ -80,29 +80,26 @@ app.register(getProfile);
 app.register(requestPasswordRecover);
 app.register(resetPassword);
 
-app.register(createOrganization)
-app.register(getMembership)
+app.register(createOrganization);
+app.register(getMembership);
 
-app.register(getOrganization)
-app.register(getOrganizations)
-app.register(updateOrganization)
-app.register(shutdownOrganization)
-app.register(transferOrganization)
+app.register(getOrganization);
+app.register(getOrganizations);
+app.register(updateOrganization);
+app.register(shutdownOrganization);
+app.register(transferOrganization);
 
-app.register(createProject)
-app.register(deleteProject)
-app.register(getProject)
-app.register(getProjects)
-app.register(updateProject)
+app.register(createProject);
+app.register(deleteProject);
+app.register(getProject);
+app.register(getProjects);
+app.register(updateProject);
 
-app.register(getMembers)
-app.register(updateMembers)
-app.register(removeMember)
+app.register(getMembers);
+app.register(updateMembers);
+app.register(removeMember);
 
-app.register(createInvite)
-
-
-
+app.register(createInvite);
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log("HTTP server running");
