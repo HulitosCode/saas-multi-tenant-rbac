@@ -3,6 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 import { BadRequestError } from "../_errors/bad-request-error";
 import { prisma } from "@/lib/prisma";
+import { env } from "@saas/env";
 
 export async function authenticateWithGithub(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -27,14 +28,14 @@ export async function authenticateWithGithub(app: FastifyInstance) {
         "https://github.com/login/oauth/access_token",
       );
 
-      githubOAuthURL.searchParams.set("client_id", "Ov23lim7dtaaaGh0X3eS");
+      githubOAuthURL.searchParams.set("client_id", env.GITHUB_OAUTH_CLIENT_ID);
       githubOAuthURL.searchParams.set(
         "client_secret",
-        "056fd18287c0f57ef20d81d3ec38d156e35da691",
+        env.GITHUB_OAUTH_SECRET,
       );
       githubOAuthURL.searchParams.set(
         "redirect_uri",
-        "http://localhost:3000/api/auth/callback",
+        env.GITHUB_OAUTH_CLIENT_REDIRECT_URI,
       );
       githubOAuthURL.searchParams.set("code", code);
 
