@@ -23,20 +23,21 @@ export async function getInvites(app: FastifyInstance) {
           }),
           response: {
             200: z.object({
-                invites: z.array(
-                    z.object({
-                        id: z.string().uuid(),
-                    role: roleSchema,
-                    email: z.string().email(),
-                    createdAt: z.date(),
+              invites: z.array(
+                z.object({
+                  id: z.string().uuid(),
+                  role: roleSchema,
+                  email: z.string().email(),
+                  createdAt: z.date(),
 
-                    author: z.object({
-                        id: z.string().uuid(),
-                        name: z.string().nullable(),
+                  author: z
+                    .object({
+                      id: z.string().uuid(),
+                      name: z.string().nullable(),
                     })
-                    .nullable()
-                    })
-              )
+                    .nullable(),
+                }),
+              ),
             }),
           },
         },
@@ -59,25 +60,25 @@ export async function getInvites(app: FastifyInstance) {
         const invites = await prisma.invite.findMany({
           where: {
             organizationId: organization.id,
-            },
-            select: {
+          },
+          select: {
+            id: true,
+            email: true,
+            role: true,
+            createdAt: true,
+            author: {
+              select: {
                 id: true,
-                email: true,
-                role: true,
-                createdAt: true,
-                author: {
-                    select: {
-                        id: true,
-                        name: true
-                    }
-                }
+                name: true,
+              },
             },
-            orderBy: {
-                createdAt: 'desc'
-            }
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
         });
 
-        return { invites }
+        return { invites };
       },
     );
 }

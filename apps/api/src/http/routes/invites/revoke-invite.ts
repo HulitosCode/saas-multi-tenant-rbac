@@ -20,11 +20,11 @@ export async function revokeInvite(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
 
           params: z.object({
-              slug: z.string(),
-              inviteId: z.string().uuid()
+            slug: z.string(),
+            inviteId: z.string().uuid(),
           }),
           response: {
-            204: z.null()
+            204: z.null(),
           },
         },
       },
@@ -45,24 +45,22 @@ export async function revokeInvite(app: FastifyInstance) {
 
         const invite = await prisma.invite.findUnique({
           where: {
-                id: inviteId,
-              organizationId: organization.id
-            },
+            id: inviteId,
+            organizationId: organization.id,
+          },
         });
 
         if (!invite) {
-          throw new BadRequestError(
-            "Invite not found.",
-          );
+          throw new BadRequestError("Invite not found.");
         }
 
         await prisma.invite.delete({
           where: {
-            id: inviteId
+            id: inviteId,
           },
         });
 
-        return reply.status(204).send()
+        return reply.status(204).send();
       },
     );
 }

@@ -24,64 +24,67 @@ export async function getOrganizationBilling(app: FastifyInstance) {
           response: {
             200: z.object({
               billing: z.object({
-                  seats: z.object({
-                      amount: z.number(),
-                      unit: z.number(),
-                      price: z.number(),
-                  }),
-                  
-                  projects: z.object({
-                      amount: z.number(),
-                      unit: z.number(),
-                      price: z.number(),
-                  }),
-                  total: z.number(),
+                seats: z.object({
+                  amount: z.number(),
+                  unit: z.number(),
+                  price: z.number(),
+                }),
+
+                projects: z.object({
+                  amount: z.number(),
+                  unit: z.number(),
+                  price: z.number(),
+                }),
+                total: z.number(),
               }),
             }),
           },
         },
       },
       async (request) => {
-          const { slug } = request.params;
-          const userId = await request.getCurrentUserId()
+        const { slug } = request.params;
+        const userId = await request.getCurrentUserId();
 
-          const { organization, membership } = await request.getUserMembership(slug);
-          
-          const { cannot } = getUserPermissions(userId, membership.role)
+        const { organization, membership } =
+          await request.getUserMembership(slug);
 
-          if (cannot('get', 'Billing')) {
-              throw new UnauthorizedError(`You're not allowed to get billing details from this organization`)
-          }
+        const { cannot } = getUserPermissions(userId, membership.role);
 
-          const [amountOfMembers, amountOfProjects] = await Promise.all([
-              prisma.member.count({
-                  where: {
-                      organizationId: organization.id,
-                      role: { not: 'BILLING' },
-                  }
-              }),
+        if (cannot("get", "Billing")) {
+          throw new UnauthorizedError(
+            `You're not allowed to get billing details from this organization`,
+          );
+        }
 
-              prisma.member.count({
-                  where: {
-                      organizationId: organization.id,
-                  }
-              })
-          ])
+        const [amountOfMembers, amountOfProjects] = await Promise.all([
+          prisma.member.count({
+            where: {
+              organizationId: organization.id,
+              role: { not: "BILLING" },
+            },
+          }),
+
+          prisma.member.count({
+            where: {
+              organizationId: organization.id,
+            },
+          }),
+        ]);
 
         return {
-            billing: {
-                seats: {
-                    amount: amountOfMembers,
-                    unit: 10,
-                    price: amountOfMembers * 10
-                },
-                projects: {
-                    amount: amountOfProjects,
-                    unit: 20,
-                    price: amountOfProjects * 20
-                },
-                total: amountOfMembers * 10 + amountOfProjects * 20
-          }
+          billing: {
+            seats: {
+              amount: amountOfMembers,
+              unit: 10,
+              price: amountOfMembers * 10,
+            },
+            projects: {
+              amount: amountOfProjects,
+              unit: 20,
+              price: amountOfProjects * 20,
+            },
+            total: amountOfMembers * 10 + amountOfProjects * 20,
+          },
         };
       },
     );
