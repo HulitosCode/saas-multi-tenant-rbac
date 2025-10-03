@@ -36,7 +36,7 @@ export async function getOrganization(app: FastifyInstance) {
         },
       },
       async (request) => {
-        const { slug } = await request.params;
+        const { slug } = request.params;
         const { organization } = await request.getUserMembership(slug);
 
         return {
